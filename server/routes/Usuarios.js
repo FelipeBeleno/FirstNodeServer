@@ -1,21 +1,7 @@
-require('./config/config');
 
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+
 const app = express();
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
-app.use(bodyParser.json())
-
-app.use( require('./routes/Usuarios'))
-
-
-app.use(express.static(__dirname + '/public'))
-
 
 app.get('/usuario', (req, res) => {
 
@@ -75,20 +61,4 @@ app.delete('/delete', (req, res) => {
     res.send(200, 'delete')
 })
 
-mongoose.connect('mongodb://127.0.0.1:27017/cafe', {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-}, (err) => {
-    if (err) {
-        throw err;
-
-    }
-    console.log('Base de Datos online');
-
-});
-
-
-app.listen(process.env.PORT, console.log(`escuchando en el puerto: ${process.env.PORT}`))
-
+module.exports = app ;
