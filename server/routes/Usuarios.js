@@ -7,6 +7,9 @@ const bcrypt = require('bcrypt');
 
 // exportacion del modelo que creamos
 const Usuario = require('../models/usuario');
+
+//middleware token
+const { verificarToken, verificarRole } = require('../middlewares/tokenMiddleware');
 // exportar underScore.js
 const _ = require('underscore');
 
@@ -15,8 +18,11 @@ const app = express();
 
 
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificarToken, (req, res) => {
 
+    const usuario = req.usuario;
+
+   
     // desde que registro se quiere ver los datos
     let desde = parseFloat(req.query.desde) || 0
     // cuantos valores se quieren ver por pagina
@@ -25,7 +31,7 @@ app.get('/usuario', (req, res) => {
     Usuario.find({ estado: true }, 'nombre email')
         .skip(desde)
         .limit(limite)
-        .exec((err, data) => {
+        .exec((err, usuario) => {
             if (err) {
                 return res.json(400, {
                     ok: false,
@@ -41,7 +47,7 @@ app.get('/usuario', (req, res) => {
                 }
                 res.json(200, {
                     ok: true,
-                    usuarios: data,
+                    usuarios: usuario,
                     numRegistros: counts
                 })
             })
@@ -51,7 +57,7 @@ app.get('/usuario', (req, res) => {
 });
 
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificarToken, verificarRole], (req, res) => {
     //req.body permite obtener los valores que trae el formulario
     let body = req.body;
 
@@ -83,7 +89,7 @@ app.post('/usuario', (req, res) => {
 });
 
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificarToken, verificarRole], (req, res) => {
 
     const id = req.params.id;
 
@@ -104,27 +110,27 @@ app.put('/usuario/:id', (req, res) => {
     });
 
 });
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificarToken, verificarRole], (req, res) => {
 
     let id = req.params.id;
 
-    Usuario.findByIdAndUpdate(id, {estado: false}, (err, usuarioActualizado)=>{
+    Usuario.findByIdAndUpdate(id, { estado: false }, (err, usuarioActualizado) => {
         if (err) {
             return res.json(400, {
-                ok:false,
-                error:{
+                ok: false,
+                error: {
                     message: err
                 }
             })
         }
         if (usuarioActualizado === null) {
             return res.json(400, {
-                ok:false,
+                ok: false,
                 message: 'El id no existe'
             })
         }
-        res.json(200,{
-            ok:true,
+        res.json(200, {
+            ok: true,
             usuarioActualizado
         })
     })

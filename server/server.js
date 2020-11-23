@@ -11,10 +11,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use( require('./routes/Usuarios'))
 
-
-app.use(express.static(__dirname + '/public'))
+// Recoleccion de todas las rutas en el Index.js
+// Configuracion global de rutas
+app.use(require('./routes/Index'))
 
 
 
