@@ -16,6 +16,7 @@ const verificarToken = (req, res, next) => {
         }
 
         req.usuario = usuario.usuario
+        //console.log(usuario);
     
         next();
     })

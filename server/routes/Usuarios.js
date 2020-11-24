@@ -20,8 +20,7 @@ const app = express();
 
 app.get('/usuario', verificarToken, (req, res) => {
 
-    const usuario = req.usuario;
-
+   
    
     // desde que registro se quiere ver los datos
     let desde = parseFloat(req.query.desde) || 0
