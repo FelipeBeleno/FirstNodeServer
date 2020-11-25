@@ -17,7 +17,7 @@ const verificarToken = (req, res, next) => {
 
         req.usuario = usuario.usuario
         //console.log(usuario);
-    
+
         next();
     })
 
@@ -28,11 +28,11 @@ const verificarToken = (req, res, next) => {
 
 const verificarRole = (req, res, next) => {
 
-    const usuario =  req.usuario;
+    const usuario = req.usuario;
 
     if (usuario.role === "ADMIN_ROLE") {
         next()
-    }else{
+    } else {
         return res.json({
             message: 'Rol no permitido a esta instancia'
         })
@@ -40,8 +40,27 @@ const verificarRole = (req, res, next) => {
 
 }
 
+//verificar token con img
+const verificaTokenImg = (req, res, next) => {
+    const token = req.query.token
+
+    jwt.verify(token, process.env.SEED, (err, usuario) => {
+        if (err) {
+            return res.json({
+                ok: false,
+                err
+            })
+        }
+
+        req.usuario = usuario.usuario
+        //console.log(usuario);
+
+        next();
+    })
+}
 
 module.exports = {
     verificarToken,
-    verificarRole
+    verificarRole,
+    verificaTokenImg
 }

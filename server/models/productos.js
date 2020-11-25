@@ -20,6 +20,10 @@ const productosSchema = new Schema({
         required: true,
         default: true
     },
+    img:{
+        type: String,
+        required: false
+    },
     usuario:{
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
