@@ -11,6 +11,13 @@ app.use(require('./Productos'));
 app.use(require('./Cargas'));
 app.use(require('./Imagenes'));
 
+app.get('/',(req, res)=>{
+    res.json({
+        ok: true,
+        message: 'BackEnd Listo para uso'
+    })
+})
+
 
 
 
