@@ -42,9 +42,10 @@ app.post('/login', (req, res) => {
             })
         }
 
-        const token = jwt.sign({
-            usuario: usuario
-        }, process.env.SEED, { expiresIn: process.env.CADUCIDAD_TOKEN  })
+        const token = jwt.sign(
+            { usuario: usuario },
+            process.env.SEED,
+            { expiresIn: process.env.CADUCIDAD_TOKEN })
         res.json(200, {
             ok: true,
             Usuario: usuario,

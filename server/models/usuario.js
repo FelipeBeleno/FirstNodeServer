@@ -51,6 +51,7 @@ let usuarioSchema = new Schema({
 
 // por medio de los plugins se puede añadir funcionalidades al esquema.
 usuarioSchema.plugin( validator ,{message: '{PATH} debe de ser unico'})
+
 //Modificacion de retorno, quitando la contraseña que se imprime al usuario Json:
 usuarioSchema.methods.toJSON = function () {
     // user ahora tiene el valor que hay actualmente en el objeto
